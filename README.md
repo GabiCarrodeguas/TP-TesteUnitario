@@ -531,17 +531,6 @@ refactor: extrai validação para método privado
 2. Confirme que o código está no **seu fork** no GitHub.
 3. Envie o **link do seu repositório (fork)** no ambiente virtual da disciplina.
 
-### 🏆 Critérios de avaliação
-
-| Critério | Peso |
-|---|---|
-| Testes da Calculadora implementados e passando | 20% |
-| Código da Calculadora implementado corretamente | 10% |
-| Testes da Conta Bancária (mínimo 15, cobrindo todos os métodos) | 30% |
-| Código da Conta Bancária implementado e passando | 15% |
-| Commits incrementais demonstrando o ciclo TDD | 15% |
-| Arquivo `resultado-testes.txt` com todos os testes passando | 10% |
-
 ---
 
 ## 📚 Referências
