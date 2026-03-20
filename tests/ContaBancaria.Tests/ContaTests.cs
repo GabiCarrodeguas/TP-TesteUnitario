@@ -97,7 +97,15 @@ public class ContaTests
     //    - Depósito com valor negativo lança ArgumentException
     //    - Depósito em conta inativa lança InvalidOperationException
     // =======================================================
+    [Fact]
+    public void Depositar_ValorValido_AtualizaSaldo()
+    {
+        var conta = new Conta("Maria", 100);
 
+        conta.Depositar(50);
+
+        Assert.Equal(150, conta.Saldo);
+    }
 
     // =======================================================
     //  Testes para Sacar
