@@ -45,8 +45,17 @@ public class Conta
     public void Depositar(decimal valor)
     {
         // TODO: Implemente usando TDD
-        throw new NotImplementedException();
+        {
+            if (!Ativa)
+                throw new InvalidOperationException("Conta inativa.");
+
+            if (valor <= 0)
+                throw new ArgumentException("O valor do depósito deve ser maior que zero.", nameof(valor));
+
+            Saldo += valor;
+        }
     }
+
 
     /// <summary>
     /// Saca um valor da conta.

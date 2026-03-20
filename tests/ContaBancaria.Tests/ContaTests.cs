@@ -107,6 +107,23 @@ public class ContaTests
         Assert.Equal(150, conta.Saldo);
     }
 
+[Fact]
+public void Depositar_ValorZero_LancaArgumentException()
+{
+    var conta = new Conta("Maria", 100);
+
+    Assert.Throws<ArgumentException>(() => conta.Depositar(0));
+}
+
+[Fact]
+public void Depositar_ValorNegativo_LancaArgumentException()
+{
+    var conta = new Conta("Maria", 100);
+
+    Assert.Throws<ArgumentException>(() => conta.Depositar(-10));
+}
+
+
     // =======================================================
     //  Testes para Sacar
     //  Sugestão de testes:
