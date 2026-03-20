@@ -107,21 +107,21 @@ public class ContaTests
         Assert.Equal(150, conta.Saldo);
     }
 
-[Fact]
-public void Depositar_ValorZero_LancaArgumentException()
-{
-    var conta = new Conta("Maria", 100);
+    [Fact]
+    public void Depositar_ValorZero_LancaArgumentException()
+    {
+        var conta = new Conta("Maria", 100);
 
-    Assert.Throws<ArgumentException>(() => conta.Depositar(0));
-}
+        Assert.Throws<ArgumentException>(() => conta.Depositar(0));
+    }
 
-[Fact]
-public void Depositar_ValorNegativo_LancaArgumentException()
-{
-    var conta = new Conta("Maria", 100);
+    [Fact]
+    public void Depositar_ValorNegativo_LancaArgumentException()
+    {
+        var conta = new Conta("Maria", 100);
 
-    Assert.Throws<ArgumentException>(() => conta.Depositar(-10));
-}
+        Assert.Throws<ArgumentException>(() => conta.Depositar(-10));
+    }
 
 
     // =======================================================
@@ -133,7 +133,48 @@ public void Depositar_ValorNegativo_LancaArgumentException()
     //    - Saque com valor negativo lança ArgumentException
     //    - Saque em conta inativa lança InvalidOperationException
     // =======================================================
+    [Fact]
+    public void Sacar_ValorValido_AtualizaSaldo()
+    {
+        var conta = new Conta("Maria", 100);
 
+        conta.Sacar(50);
+
+        Assert.Equal(50, conta.Saldo);
+    }
+
+    [Fact]
+    public void Sacar_ValorMaiorQueSaldo_LancaInvalidOperationException()
+    {
+        var conta = new Conta("Maria", 100);
+
+        Assert.Throws<InvalidOperationException>(() => conta.Sacar(150));
+    }
+
+    [Fact]
+    public void Sacar_ValorZero_LancaArgumentException()
+    {
+        var conta = new Conta("Maria", 100);
+
+        Assert.Throws<ArgumentException>(() => conta.Sacar(0));
+    }
+
+    [Fact]
+    public void Sacar_ValorNegativo_LancaArgumentException()
+    {
+        var conta = new Conta("Maria", 100);
+
+        Assert.Throws<ArgumentException>(() => conta.Sacar(-10));
+    }
+
+    [Fact]
+    public void Sacar_ContaInativa_LancaInvalidOperationException()
+    {
+        var conta = new Conta("Maria", 100);
+        conta.Encerrar();
+
+        Assert.Throws<InvalidOperationException>(() => conta.Sacar(10));
+    }
 
     // =======================================================
     //  Testes para Transferir
@@ -144,7 +185,66 @@ public void Depositar_ValorNegativo_LancaArgumentException()
     //    - Transferência com conta origem inativa lança exceção
     //    - Transferência com conta destino inativa lança exceção
     // =======================================================
+[Fact]
+public void Transferir_ValorValido_AtualizaSaldoDeAmbasContas()
+{
+    var origem = new Conta("Maria", 200);
+    var destino = new Conta("João", 100);
 
+    origem.Transferir(destino, 50);
+
+    Assert.Equal(150, origem.Saldo);
+    Assert.Equal(150, destino.Saldo);
+}
+
+[Fact]
+public void Transferir_SaldoInsuficiente_LancaInvalidOperationException()
+{
+    var origem = new Conta("Maria", 100);
+    var destino = new Conta("João", 100);
+
+    Assert.Throws<InvalidOperationException>(() => origem.Transferir(destino, 150));
+}
+
+[Fact]
+public void Transferir_ValorZero_LancaArgumentException()
+{
+    var origem = new Conta("Maria", 100);
+    var destino = new Conta("João", 100);
+
+    Assert.Throws<ArgumentException>(() => origem.Transferir(destino, 0));
+}
+
+[Fact]
+public void Transferir_ValorNegativo_LancaArgumentException()
+{
+    var origem = new Conta("Maria", 100);
+    var destino = new Conta("João", 100);
+
+    Assert.Throws<ArgumentException>(() => origem.Transferir(destino, -10));
+}
+
+[Fact]
+public void Transferir_ContaOrigemInativa_LancaInvalidOperationException()
+{
+    var origem = new Conta("Maria", 100);
+    var destino = new Conta("João", 100);
+
+    origem.Encerrar();
+
+    Assert.Throws<InvalidOperationException>(() => origem.Transferir(destino, 50));
+}
+
+[Fact]
+public void Transferir_ContaDestinoInativa_LancaInvalidOperationException()
+{
+    var origem = new Conta("Maria", 100);
+    var destino = new Conta("João", 100);
+
+    destino.Encerrar();
+
+    Assert.Throws<InvalidOperationException>(() => origem.Transferir(destino, 50));
+}
 
     // =======================================================
     //  Testes para Encerrar
@@ -154,5 +254,30 @@ public void Depositar_ValorNegativo_LancaArgumentException()
     //    - Encerrar conta já inativa lança InvalidOperationException
     //    - Conta encerrada tem Ativa == false
     // =======================================================
+[Fact]
+public void Encerrar_ContaComSaldoZero_Funciona()
+{
+    var conta = new Conta("Maria", 0);
 
+    conta.Encerrar();
+
+    Assert.False(conta.Ativa);
+}
+
+[Fact]
+public void Encerrar_ContaComSaldo_LancaInvalidOperationException()
+{
+    var conta = new Conta("Maria", 100);
+
+    Assert.Throws<InvalidOperationException>(() => conta.Encerrar());
+}
+
+[Fact]
+public void Encerrar_ContaJaInativa_LancaInvalidOperationException()
+{
+    var conta = new Conta("Maria", 0);
+    conta.Encerrar();
+
+    Assert.Throws<InvalidOperationException>(() => conta.Encerrar());
+}
 }
